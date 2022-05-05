@@ -28,7 +28,7 @@ router.get("/translate", async (req, res) => {
         return res.status(400).send("Invalid Language");
     }
 
-    const translatedText = await translateText(text, language);
+    const translatedText = await translateText(text, LANGUAGE_ISO_CODE[language]); //here!!
     return res.json({
         translatedText: translatedText[0]
     })
