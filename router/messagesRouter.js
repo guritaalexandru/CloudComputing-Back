@@ -139,7 +139,8 @@ router.post("/foreign", async (req, res) => {
         });
     }
 
-    if (!LANGUAGE_ISO_CODE[language]) {
+    if (!LANGUAGE_ISO_CODE[language] && language !== "ALL") {
+        console.log(language);
         return res.status(400).send("Invalid Language");
     }
 
@@ -152,10 +153,8 @@ router.post("/foreign", async (req, res) => {
                 LANGUAGE_ISO_CODE[language]
             );
             translationData.translatedText = translatedText[0];
-        } else {
-            return res.send("Invalid Language");
         }
-        if (language === "ALL") {
+        else if (language === "ALL") {
             const availableLanguages = Object.values(LANGUAGE_ISO_CODE);
 
             const translatedAnswersArray = await Promise.all(
@@ -172,7 +171,9 @@ router.post("/foreign", async (req, res) => {
                 ""
             );
         }
-
+        else {
+            return res.send("Invalid Language");
+        }
         sendMail(
             receiverMail,
             senderMail,
